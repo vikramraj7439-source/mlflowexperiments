@@ -6,6 +6,9 @@ import os
 import warnings
 import sys
 
+import dagshub
+
+
 import pandas as pd
 import numpy as np
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
@@ -18,8 +21,16 @@ import mlflow.sklearn
 
 import logging
 
+
+
 logging.basicConfig(level=logging.WARN)
 logger = logging.getLogger(__name__)
+
+dagshub.init(
+    repo_owner="vikramraj7439-source",
+    repo_name="mlflowexperiments",
+    mlflow=True
+)
 
 
 def eval_metrics(actual, pred):
@@ -32,6 +43,9 @@ def eval_metrics(actual, pred):
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
     np.random.seed(40)
+
+    remote_server_uri="https://dagshub.com/vikramraj7439-source/mlflowexperiments.mlflow"
+    mlflow.set_tracking_uri(remote_server_uri)
 
     # Read the wine-quality csv file from the URL
     csv_url = (
